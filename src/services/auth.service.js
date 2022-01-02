@@ -1,20 +1,22 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth/';
+const LOGIN_URL = 'http://localhost/account/visitor/login2/';
+const REGISTER_URL = 'http://localhost/account/user/';
+// const LOGIN_URL = 'http://10.7.181.229/account/visitor/login2/';
+// const REGISTER_URL = 'http://10.7.181.229/account/user/';
 
 class AuthService {
     login(user) {
         return axios
-            .post(API_URL + 'signin', {
-                username: user.username,
-                password: user.password
-            })
+            .get(LOGIN_URL + user.username + '/' + user.password)
             .then(response => {
-                if (response.data.accessToken) {
-                    localStorage.setItem('user', JSON.stringify(response.data));
+                if (response.data.data.accessToken) {
+                    localStorage.setItem('user', JSON.stringify(response.data.data));
                 }
-
-                return response.data;
+                return response.data.data;
+            })
+            .catch(error => {
+                return error;
             });
     }
 
@@ -23,10 +25,13 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post(API_URL + 'signup', {
-            username: user.username,
+        return axios.post(REGISTER_URL, {
+            account: user.username,
+            password: user.password,
             email: user.email,
-            password: user.password
+            displayName: user.username,
+            domainId: 'CDW',
+            disable: false
         });
     }
 }
