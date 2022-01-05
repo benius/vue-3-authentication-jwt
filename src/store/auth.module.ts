@@ -1,5 +1,8 @@
 import AuthService from '../services/auth.service';
+import { ActionContext, Store } from "vuex";
+import { LoginUser, StoreUser } from "@/services/model";
 
+// @ts-ignore
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
     ? {status: {loggedIn: true}, user}
@@ -9,7 +12,7 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
-        login({commit}, user) {
+        login({commit}: ActionContext<any, any>, user: LoginUser) {
             return AuthService.login(user).then(
                 user => {
                     commit('loginSuccess', user);
@@ -21,11 +24,11 @@ export const auth = {
                 }
             );
         },
-        logout({commit}) {
+        logout({commit}: ActionContext<any, any>) {
             AuthService.logout();
             commit('logout');
         },
-        register({commit}, user) {
+        register({commit}: ActionContext<any, any>, user: LoginUser) {
             return AuthService.register(user).then(
                 response => {
                     commit('registerSuccess');
@@ -39,22 +42,22 @@ export const auth = {
         }
     },
     mutations: {
-        loginSuccess(state, user) {
+        loginSuccess(state: StoreUser, user: LoginUser) {
             state.status.loggedIn = true;
             state.user = user;
         },
-        loginFailure(state) {
+        loginFailure(state: StoreUser) {
             state.status.loggedIn = false;
-            state.user = null;
+            state.user = undefined;
         },
-        logout(state) {
+        logout(state: StoreUser) {
             state.status.loggedIn = false;
-            state.user = null;
+            state.user = undefined;
         },
-        registerSuccess(state) {
+        registerSuccess(state: StoreUser) {
             state.status.loggedIn = false;
         },
-        registerFailure(state) {
+        registerFailure(state: StoreUser) {
             state.status.loggedIn = false;
         }
     }

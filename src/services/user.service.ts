@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import authHeader from './auth-header';
 
 // const API_URL = 'http://localhost/account/';
@@ -10,11 +10,15 @@ class UserService {
     }
 
     getUserBoard() {
-        let user = JSON.parse(localStorage.getItem('user'));
+        // @ts-ignore
+        const user = JSON.parse(localStorage.getItem('user'));
+        const requestConfig: AxiosRequestConfig = {
+            headers: authHeader()
+        };
         if (user && user.id) {
-            return axios.get(API_URL + 'user/' + user.id, {headers: authHeader()});
+            return axios.get(API_URL + 'user/' + user.id, requestConfig);
         } else {
-            return axios.get(API_URL + 'user/unknown', {headers: authHeader()});
+            return axios.get(API_URL + 'user/unknown', requestConfig);
         }
     }
 
