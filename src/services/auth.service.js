@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const LOGIN_URL = 'http://localhost/account/visitor/login2/';
-const REGISTER_URL = 'http://localhost/account/user/';
-// const LOGIN_URL = 'http://10.7.181.229/account/visitor/login2/';
-// const REGISTER_URL = 'http://10.7.181.229/account/user/';
+// const LOGIN_URL = 'http://localhost/account/visitor/login2/';
+// const REGISTER_URL = 'http://localhost/account/user/';
+const LOGIN_URL = 'http://10.7.181.229/account/visitor/login2/';
+const REGISTER_URL = 'http://10.7.181.229/account/user/';
 
 class AuthService {
     login(user) {
