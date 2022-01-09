@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { LoginUser } from "@/services/model";
 
-// const LOGIN_URL = 'http://localhost/account/visitor/login2/';
+// const LOGIN_URL = 'http://localhost/account/visitor/login';
 // const REGISTER_URL = 'http://localhost/account/user/';
-const LOGIN_URL = 'http://10.7.181.229/account/visitor/login2/';
+const LOGIN_URL = 'http://10.7.181.229/account/visitor/login';
 const REGISTER_URL = 'http://10.7.181.229/account/user/';
 
 class AuthService {
     login(user: LoginUser) {
         return axios
-            .get(LOGIN_URL + user.username + '/' + user.password)
+            .get(LOGIN_URL + '?account=' + user.username + '&password=' + user.password)
             .then(response => {
                 if (response.data.data.accessToken) {
                     localStorage.setItem('user', JSON.stringify(response.data.data));

@@ -4,8 +4,7 @@
       <img
           id="profile-img"
           src="//tw.systex.com/wp-content/uploads/sites/2/%E7%94%A8%E9%9B%B2_1920x1080.jpg"
-          class="profile-img-card"
-      />
+          class="profile-img-card" alt="Login ICON"/>
       <Form @submit="handleLogin" :validation-schema="schema">
         <div class="form-group">
           <label for="username">Username</label>
@@ -38,60 +37,63 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
+import { computed, defineComponent, ref } from "vue";
+import store from "@/store";
+import router from "@/router";
+import { LoginUser } from "@/services/model";
 
-export default {
-  name: "Login",
+export default defineComponent({
+  name: 'Login',
   components: {
     Form,
     Field,
     ErrorMessage,
   },
-  data() {
+  setup() {
     const schema = yup.object().shape({
       username: yup.string().required("Username is required!"),
       password: yup.string().required("Password is required!"),
     });
 
+    const loading = ref(false);
+    const message = ref('');
+    const loggedIn = computed(() => {
+      return store.state.auth.status.loggedIn
+    });
+
+    if (loggedIn.value) {
+      router.push('/profile');
+    }
+
     return {
-      loading: false,
-      message: "",
       schema,
-    };
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/profile");
+      loading,
+      message,
+      loggedIn,
     }
   },
   methods: {
-    handleLogin(user) {
+    handleLogin(user: LoginUser) {
       this.loading = true;
 
-      this.$store.dispatch("auth/login", user).then(
+      store.dispatch("auth/login", user).then(
           () => {
-            this.$router.push("/profile");
+            router.push("/profile");
           },
           (error) => {
             this.loading = false;
             this.message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
+                (error.response && error.response.data && error.response.data.message)
+                || error.message
+                || error.toString();
           }
       );
     },
-  },
-};
+  }
+})
 </script>
 
 <style scoped>

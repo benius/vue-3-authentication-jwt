@@ -1,54 +1,54 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "./components/Home.vue";
-import Login from "./components/Login.vue";
-import Register from "./components/Register.vue";
+import home from "./components/Home.vue";
+import login from "./components/Login.vue";
+import register from "./components/Register.vue";
 // lazy-loaded
-const Profile = () => import("./components/Profile.vue")
-const BoardAdmin = () => import("./components/BoardAdmin.vue")
-const BoardModerator = () => import("./components/BoardModerator.vue")
-const BoardUser = () => import("./components/BoardUser.vue")
+const profile = () => import("./components/Profile.vue")
+const boardAdmin = () => import("./components/BoardAdmin.vue")
+const boardModerator = () => import("./components/BoardModerator.vue")
+const boardUser = () => import("./components/BoardUser.vue")
 
 const routes = [
     {
         path: "/",
         name: "home",
-        component: Home,
+        component: home,
     },
     {
         path: "/home",
-        component: Home,
+        component: home,
     },
     {
         path: "/login",
-        component: Login,
+        component: login,
     },
     {
         path: "/register",
-        component: Register,
+        component: register,
     },
     {
         path: "/profile",
         name: "profile",
         // lazy-loaded
-        component: Profile,
+        component: profile,
     },
     {
         path: "/admin",
         name: "admin",
         // lazy-loaded
-        component: BoardAdmin,
+        component: boardAdmin,
     },
     {
         path: "/mod",
         name: "moderator",
         // lazy-loaded
-        component: BoardModerator,
+        component: boardModerator,
     },
     {
         path: "/user",
         name: "user",
         // lazy-loaded
-        component: BoardUser,
+        component: boardUser,
     },
 ];
 

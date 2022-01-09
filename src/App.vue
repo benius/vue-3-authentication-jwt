@@ -62,12 +62,15 @@
 import { computed, defineComponent } from "vue";
 import store from "./store";
 import router from "@/router";
+import { LoginUser } from "@/services/model";
 
 export default defineComponent({
   setup() {
-    const currentUser = computed(() => store.state.auth.user);
-    const showAdminBoard = computed(() => (currentUser.value && currentUser.value['roles']) ? currentUser.value['roles'].includes('ROLE_ADMIN') : false);
-    const showModeratorBoard = computed(() => (currentUser.value && currentUser.value['roles']) ? currentUser.value['roles'].include('ROLE_MODERATOR') : false);
+    const currentUser = computed((): LoginUser => store.state.auth.user);
+    const showAdminBoard = computed(() => currentUser.value?.authorities?.some((r: string) => r === 'admin'));
+    const showModeratorBoard = computed(() => currentUser.value?.authorities?.some((r: string) => r === 'cdw-admin'));
+    // const showAdminBoard = computed(() => (currentUser.value && currentUser.value['authorities']) ? currentUser.value['authorities'].includes('admin') : false);
+    // const showModeratorBoard = computed(() => (currentUser.value && currentUser.value['authorities']) ? currentUser.value['authorities'].include('cdw_admin') : false);
 
     return {
       currentUser, showAdminBoard, showModeratorBoard
